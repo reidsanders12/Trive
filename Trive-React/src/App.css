@@ -1,4 +1,4 @@
-/* App.css */
+/* App.css Updates */
 :root {
   --navy: #0f172a;
   --blue: #2563eb;
@@ -16,64 +16,59 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* 
+   Takes up at least 100% of the viewport height (window), 
+   ensuring the footer stays at the bottom even on massive monitors 
+*/
 .app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 calc(2% + 12px); /* Scales padding dynamically based on window width */
+  box-sizing: border-box;
 }
 
-/* Navbar Styling */
+/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 0;
+  padding: 2vh 0; /* Dynamic padding based on viewport height */
 }
 
 .nav-logo {
-  font-size: 24px;
+  font-size: clamp(20px, 2vw, 24px); /* Fluid typography */
   font-weight: 900;
   letter-spacing: -1px;
 }
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  gap: 4vw; /* Gap scales with window width */
   align-items: center;
 }
 
-.nav-links a {
-  text-decoration: none;
-  color: var(--slate);
-  font-size: 14px;
-  font-weight: 600;
+/* On smaller screens/phones, hide secondary desktop nav links if needed */
+@media (max-width: 600px) {
+  .nav-links a {
+    display: none;
+  }
 }
 
-.nav-btn-secondary {
-  background: transparent;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.nav-btn-primary {
-  background: var(--navy);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-/* Hero Section */
+/* Hero Section - Centered and occupying proportionate vertical space */
 .hero-section {
   text-align: center;
-  padding: 100px 0 80px;
+  padding: 8vh 0; /* Uses viewport height to stay perfectly balanced */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-title {
-  font-size: 64px;
+  /* Dynamic font sizing: scales between 36px and 64px based on window size */
+  font-size: clamp(36px, 5vw, 64px); 
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: 24px;
@@ -81,59 +76,242 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 20px;
+  /* Scales text down nicely on mobile phones */
+  font-size: clamp(16px, 1.5vw, 20px);
   color: var(--slate);
   max-width: 600px;
+  width: 100%;
   margin: 0 auto 40px;
   line-height: 1.6;
 }
 
-.btn-main {
-  background: var(--blue);
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-  margin-right: 16px;
-}
-
-.btn-text {
-  background: transparent;
-  border: none;
-  color: var(--navy);
-  font-weight: 700;
-  cursor: pointer;
-}
-
 /* Feed Section */
 .feed-section {
-  padding-bottom: 100px;
+  flex-grow: 1; /* Pushes the footer down if content is sparse */
+  padding-bottom: 8vh;
 }
 
-.section-header {
-  margin-bottom: 40px;
-}
-
-.section-header h2 {
-  font-size: 24px;
-  font-weight: 800;
-  margin-bottom: 8px;
-}
-
+/* 
+   The Magic Matrix: 
+   Automatically figures out how many columns can fit in the window.
+   If there is a single card, it won't stretch awkwardly.
+*/
 .card-grid {
-  display: flex;
-  justify-content: center; /* Center the single card for now */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .footer {
   text-align: center;
-  padding: 40px 0;
+  padding: 4vh 0;
   border-top: 1px solid #e2e8f0;
   color: var(--slate);
   font-size: 12px;
   font-weight: 600;
+  margin-top: auto; /* Aligns footer perfectly at the bottom of the window */
+}
+/* --- BUTTONS: PREMIUM UTILITY STYLES --- */
+
+/* 1. Main Action Button (e.g., "Verify & Join" in Hero) */
+.btn-main {
+  background-color: var(--blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px; /* Sharper corners for an institutional look */
+  padding: 14px 28px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em; /* Clean tracking */
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-main:hover {
+  background-color: #1d4ed8; /* Slightly darker rich blue */
+}
+
+.btn-main:active {
+  transform: scale(0.98);
+}
+
+/* 2. Secondary/Text Action Button (e.g., "How It Works") */
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding: 14px 20px;
+  transition: color 0.15s ease;
+}
+
+.btn-text:hover {
+  color: var(--blue);
+}
+
+/* 3. Primary Navbar Button (e.g., "Join the Exchange") */
+.nav-btn-primary {
+  background-color: var(--navy);
+  color: #ffffff;
+  border: 1px solid var(--navy);
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-btn-primary:hover {
+  background-color: transparent;
+  color: var(--navy);
+}
+
+/* 4. Secondary Navbar Button (e.g., "Log In") */
+.nav-btn-secondary {
+  background: transparent;
+  border: none;
+  color: var(--slate);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.nav-btn-secondary:hover {
+  color: var(--navy);
+}
+
+.cta-button {
+  width: 100%;
+  background: transparent;
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  color: var(--navy);
+  padding: 12px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.cta-button:hover {
+  background-color: var(--navy);
+  color: #ffffff;
+}
+
+/* SVG Arrow animation inside card button */
+.cta-button svg {
+  transition: transform 0.2s ease;
+}
+
+.cta-button:hover svg {
+  transform: translateX(4px); /* Slick micro-interaction */
+}
+
+/* Trive Credit Badge Styling */
+.tc-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: rgba(37, 99, 235, 0.08); /* Very light blue tint */
+  color: var(--blue);
+  
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(37, 99, 235, 0.2);
+  
+  font-family: 'JetBrains Mono', 'Menlo', monospace; /* The "Money" font */
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.05);
+  transition: all 0.2s ease;
+}
+
+/* Hover effect for the badge itself */
+.tc-badge:hover {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+/* App.css additions */
+.nav-profile-group {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-left: 1px solid #e2e8f0;
+  padding-left: 24px;
+}
+
+.balance-display {
+  text-align: right;
+}
+
+.balance-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 900;
+  color: var(--slate);
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-profile-group {
+  display: flex;
+  align-items: center;
+  gap: 24px; /* Space between Balance and Email */
+  border-left: 1px solid #e2e8f0;
+  padding-left: 24px;
+}
+
+.user-info-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns text to the left */
+  margin: 0 15px;
+  line-height: 1.2;
+}
+
+.user-email {
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 13px;
+}
+
+.account-status {
+  font-size: 10px;
+  color: #22C55E;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px; /* This creates the physical space you're looking for */
 }

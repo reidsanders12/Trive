@@ -1,0 +1,136 @@
+/* src/screens/Login.css */
+.login-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.6); /* Translucent navy backdrop */
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.login-header h2 {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--navy);
+  margin: 0;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--slate);
+  cursor: pointer;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: var(--slate);
+  margin: 0 0 24px 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--navy);
+}
+
+.input-group input {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--navy);
+  background-color: #f8fafc;
+}
+
+.input-group input:focus {
+  outline: 2px solid var(--blue);
+  background-color: #ffffff;
+}
+
+.auth-error {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  color: #b91c1c;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+/* Add to src/screens/Login.css */
+
+/* Green alert box for successful registration */
+.auth-success {
+  background-color: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  color: #15803d;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* Footer layout inside the card to toggle states */
+.auth-toggle-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--slate);
+}
+
+.auth-toggle-footer span {
+  color: var(--blue);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.auth-toggle-footer span:hover {
+  color: #1d4ed8;
+}

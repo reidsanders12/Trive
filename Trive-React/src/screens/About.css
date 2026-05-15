@@ -1,0 +1,99 @@
+/* About.css */
+.about-section {
+  width: 100%;
+  border-radius: 20px;
+  padding: 120px 0; /* More generous vertical breathing room */
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  box-shadow: 0 20px 100px rgba(0, 0, 0, 0.2);
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 64px;
+  width: 90%; /* Keeps it from hitting the screen edges */
+  max-width: 1100px; /* Slightly narrower looks more intentional */
+  margin: 0 auto;
+  align-items: center; /* This is the secret sauce - centers everything vertically */
+}
+
+/* Desktop layout */
+@media (min-width: 968px) {
+  .about-container {
+    grid-template-columns: 1.1fr 0.9fr; /* Better balance between text and cards */
+    gap: 100px; /* More space between the two columns */
+  }
+}
+
+/* Left Content Column */
+.about-tagline {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+
+.about-title {
+  font-size: clamp(32px, 4.5vw, 52px);
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.05;
+  margin: 0 0 32px 0;
+  letter-spacing: -1.5px;
+}
+
+.about-text {
+  font-size: 17px; /* Slightly larger for readability */
+  line-height: 1.7;
+  color: #475569; /* Slightly softer slate */
+  margin-bottom: 24px;
+}
+
+/* Right Pillars Column */
+.about-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pillar-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px; /* Softer corners look more modern */
+  padding: 28px;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.pillar-card:hover {
+  border-color: var(--blue);
+  background-color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.pillar-num {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--blue);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.pillar-card h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 0 0 8px 0;
+}
+
+.pillar-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #64748b;
+  margin: 0;
+}

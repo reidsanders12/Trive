@@ -1,6 +1,8 @@
 /* InternshipCard.css */
 .trive-card {
-  max-width: 384px;
+  width: 100%; /* Take up the full width assigned by the grid column */
+  max-width: 384px; /* But don't blow up larger than this on big desktop grids */
+  box-sizing: border-box; /* Makes sure padding doesn't break the width math */
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
@@ -116,22 +118,154 @@
   line-height: 1.5;
 }
 
+/* --- BUTTONS: PREMIUM UTILITY STYLES --- */
+
+/* 1. Main Action Button (e.g., "Verify & Join" in Hero) */
+.btn-main {
+  background-color: var(--blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px; /* Sharper corners for an institutional look */
+  padding: 14px 28px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em; /* Clean tracking */
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-main:hover {
+  background-color: #1d4ed8; /* Slightly darker rich blue */
+}
+
+.btn-main:active {
+  transform: scale(0.98);
+}
+
+/* 2. Secondary/Text Action Button (e.g., "How It Works") */
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding: 14px 20px;
+  transition: color 0.15s ease;
+}
+
+.btn-text:hover {
+  color: var(--blue);
+}
+
+/* 3. Primary Navbar Button (e.g., "Join the Exchange") */
+.nav-btn-primary {
+  background-color: var(--navy);
+  color: #ffffff;
+  border: 1px solid var(--navy);
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-btn-primary:hover {
+  background-color: transparent;
+  color: var(--navy);
+}
+
+/* 4. Secondary Navbar Button (e.g., "Log In") */
+.nav-btn-secondary {
+  background: transparent;
+  border: none;
+  color: var(--slate);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.nav-btn-secondary:hover {
+  color: var(--navy);
+}
+
 .cta-button {
   width: 100%;
-  padding: 12px;
   background: transparent;
-  border: 2px solid #0f172a;
-  border-radius: 8px;
-  color: #0f172a;
-  font-size: 12px;
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  color: var(--navy);
+  padding: 12px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   cursor: pointer;
-  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
 }
 
 .cta-button:hover {
-  background: #0f172a;
+  background-color: var(--navy);
   color: #ffffff;
+}
+
+/* SVG Arrow animation inside card button */
+.cta-button svg {
+  transition: transform 0.2s ease;
+}
+
+.cta-button:hover svg {
+  transform: translateX(4px); /* Slick micro-interaction */
+}
+
+/* Inside InternshipCard.css */
+.exchange-cost-value {
+  font-family: 'JetBrains Mono', 'Courier New', monospace; /* Financial look */
+  font-weight: 850;
+  color: var(--blue);
+  letter-spacing: -0.02em;
+}
+
+/* Trive Credit Badge Styling */
+.tc-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: rgba(37, 99, 235, 0.08); /* Very light blue tint */
+  color: var(--blue);
+  
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(37, 99, 235, 0.2);
+  
+  font-family: 'JetBrains Mono', 'Menlo', monospace; /* The "Money" font */
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.05);
+  transition: all 0.2s ease;
+}
+
+/* Hover effect for the badge itself */
+.tc-badge:hover {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+  transform: translateY(-1px);
 }

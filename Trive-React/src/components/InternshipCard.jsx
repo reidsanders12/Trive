@@ -26,16 +26,20 @@ const InternshipCard = ({ data }) => {
           <span className="label">Lead Type:</span>
           <span className="value">{data.leadType}</span>
         </div>
-        <div className="detail-row">
-          <span className="label">Exchange Cost:</span>
-          <span className="cost-value">$TRIVE {data.cost}</span>
+        <div className="lead-cost-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--slate)' }}>
+            Exchange Cost:
+          </span>
+          <div className="tc-badge">
+            {data.cost || 50} TC
+          </div>
         </div>
       </div>
 
       <div className="probability-container">
         <div className="prob-text">
           <span>Probability ({data.probability}%)</span>
-          <span style={{color: '#94a3b8'}}>Posted {data.postedDate}</span>
+          <span style={{ color: '#94a3b8' }}>Posted {data.postedDate}</span>
         </div>
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: `${data.probability}%` }}></div>
@@ -46,7 +50,13 @@ const InternshipCard = ({ data }) => {
         <p><strong>INSIDER INSIGHT:</strong> "{data.insight}"</p>
       </div>
 
-      <button className="cta-button">View Full Details</button>
+      <button className="cta-button">
+        View Full Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
     </div>
   );
 };
