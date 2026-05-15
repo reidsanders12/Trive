@@ -186,6 +186,7 @@ body {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
+  margin-right: 10px;
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: color 0.15s ease;
@@ -314,4 +315,96 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-top: 2px; /* This creates the physical space you're looking for */
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+}
+
+.nav-icon-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px; /* Matches that Facebook square-round look */
+}
+
+.blurred-info {
+  background: rgba(241, 245, 249, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px dashed #cbd5e1;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.view-details-btn {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.1s ease;
+}
+
+.view-details-btn:active {
+  transform: scale(0.95);
+}
+
+.revealed-info {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.balance-display.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+/* Subtle glow/background change on hover */
+.balance-display.clickable:hover {
+  background: rgba(37, 99, 235, 0.05); /* Very light blue tint */
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.balance-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.05em;
+}
+
+.plus-sign {
+  color: #2563eb; /* Trive Blue */
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 800;
+  margin-top: -2px; /* Pull it up slightly for optical alignment */
+}
+
+.balance-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }

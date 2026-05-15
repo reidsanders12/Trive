@@ -1,0 +1,80 @@
+.shop-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.shop-modal-container {
+  background: white;
+  width: 90%;
+  max-width: 900px;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+}
+
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+}
+
+.close-shop-btn {
+  background: none; border: none; font-size: 28px; cursor: pointer; color: #64748b;
+}
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.tier-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.tier-card.popular {
+  border: 2px solid #2563eb;
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.popular-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: #2563eb; color: white; font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+}
+
+.tier-token-amount {
+  font-size: 36px; font-weight: 800; color: #0f172a; margin: 15px 0 5px 0;
+}
+
+.tier-token-amount .unit { font-size: 16px; color: #64748b; }
+.tier-price { font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 20px; margin-top: auto;}
+
+.purchase-tier-btn {
+  width: 100%; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; border: none;
+}
+.btn-primary { background: #2563eb; color: white; }
+.btn-secondary { background: #f1f5f9; color: #0f172a; }
+
+/* Add this to style the mini plus sign next to the wallet badge */
+.buy-tc-trigger-btn {
+  background: #2563eb; color: white; border: none; 
+  width: 20px; height: 20px; border-radius: 50%;
+  font-size: 14px; font-weight: bold; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: 8px;
+}
