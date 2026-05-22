@@ -32,7 +32,7 @@ function App() {
         return () => subscription.unsubscribe();
     }, []);
 
-    // Trigger data fetch when user state is resolved
+    // Trigger data fetch when user state is resolved or when state mutations occur
     useEffect(() => {
         fetchProfileAndExchanges();
     }, [user]);
@@ -42,7 +42,7 @@ function App() {
         let currentUserId = user?.id || null;
         let purchasedIds = [];
 
-        // Fetch credits and purchases if logged in
+        // 1. Fetch user profile data and purchased keys if logged in
         if (currentUserId) {
             const { data: profileData } = await supabase
                 .from('profiles')
@@ -60,7 +60,12 @@ function App() {
             }
         }
 
-        // Fetch feeds
+        // 2. Fetch tracking rows containing current metrics AND textual crowd notes
+        const { data: trackerRows } = await supabase
+            .from('pipeline_tracker')
+            .select('exchange_id, current_stage, stage_notes');
+
+        // 3. Fetch active corporate pipelines
         const { data: leadsData, error } = await supabase
             .from('exchanges')
             .select('*')
@@ -68,23 +73,50 @@ function App() {
             .order('created_at', { ascending: false });
 
         if (!error && leadsData) {
-            // Market-driven algorithm mapping: Cost is scaled exactly to probability metric
             const formatted = leadsData.map(item => {
-                const dynamicCost = Math.max(20, Math.round(item.probability)); 
+                // Isolate tracking logs tied strictly to this company's row ID
+                const companyRows = trackerRows ? trackerRows.filter(r => r.exchange_id === item.id) : [];
+                const totalApplicants = companyRows.length;
+
+                // Extract and structure valid textual insights logged by peers
+                const liveLogs = companyRows
+                    .filter(r => r.stage_notes && r.stage_notes.trim() !== "")
+                    .map(r => ({
+                        stage: r.current_stage,
+                        text: r.stage_notes
+                    }));
+
+                // Compute exact percentage distribution metrics
+                const getPercentage = (stageName) => {
+                    if (totalApplicants === 0) return 0;
+                    const matchCount = companyRows.filter(r => r.current_stage === stageName).length;
+                    return Math.round((matchCount / totalApplicants) * 100);
+                };
+
+                // Asset cost scaling relative to underlying probability score
+                const dynamicCost = Math.max(20, Math.round(item.probability));
 
                 return {
-                    id: item.id, 
+                    id: item.id,
                     company: item.company,
                     role: item.role,
                     location: item.location,
                     tags: item.tags || [],
                     vettedBy: item.vetted_by || 'Trive Approved',
                     leadType: item.lead_type,
-                    cost: dynamicCost, // Dynamic asset pricing applied here
+                    cost: dynamicCost,
                     probability: item.probability,
                     insight: item.insight,
-                    postedDate: 'Verified',
-                    isAlreadyUnlocked: purchasedIds.includes(item.id)
+                    isAlreadyUnlocked: purchasedIds.includes(item.id),
+                    applicantCount: totalApplicants,
+                    liveIntelligenceLogs: liveLogs, // Feed array to the card
+                    stats: {
+                        applied: getPercentage('Applied'),
+                        oa: getPercentage('OA Invite'),
+                        interview: getPercentage('Interview'),
+                        offer: getPercentage('Offer'),
+                        rejected: getPercentage('Rejected')
+                    }
                 };
             });
             setExchanges(formatted);
@@ -92,6 +124,30 @@ function App() {
         setLoadingExchanges(false);
     };
 
+    const handleUpdatePipelineStatus = async (exchangeId, stage, notes) => {
+        if (!user) {
+            setShowLoginModal('login');
+            return;
+        }
+
+        // Pass the parameters with underscores to match the updated SQL signature
+        const { error } = await supabase.rpc('update_pipeline_status', {
+            _user_id: user.id,
+            _exchange_id: parseInt(exchangeId),
+            _new_stage: stage,
+            _notes: notes || ""
+        });
+
+        if (error) {
+            console.error("Database structural mismatch:", error.message);
+            alert("Failed to record status: " + error.message);
+        } else {
+            // Increment wallet ledger locally
+            setCredits(prev => prev + 10);
+            alert(`Intelligence logged! Your wallet has been credited +10 TC.`);
+            fetchProfileAndExchanges(); // Re-sync components data map
+        }
+    };
     const handleBuyCredits = async (amount) => {
         if (!user) return false;
 
@@ -208,6 +264,7 @@ function App() {
                                 data={exchange}
                                 userCredits={credits}
                                 onPurchase={(cost) => handlePurchaseLead(exchange.id, cost)}
+                                onStatusUpdate={(stage, notes) => handleUpdatePipelineStatus(exchange.id, stage, notes)}
                             />
                         ))
                     )}

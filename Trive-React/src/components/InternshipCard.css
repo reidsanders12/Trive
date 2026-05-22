@@ -1,19 +1,22 @@
 /* InternshipCard.css */
 .trive-card {
-  width: 100%; /* Take up the full width assigned by the grid column */
-  max-width: 384px; /* But don't blow up larger than this on big desktop grids */
-  box-sizing: border-box; /* Makes sure padding doesn't break the width math */
+  width: 100%;
+  /* Take up the full width assigned by the grid column */
+  max-width: 384px;
+  /* But don't blow up larger than this on big desktop grids */
+  box-sizing: border-box;
+  /* Makes sure padding doesn't break the width math */
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 24px;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .trive-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
 
@@ -75,11 +78,25 @@
   margin-bottom: 8px;
 }
 
-.label { color: #64748b; font-weight: 500; }
-.value { color: #0f172a; font-weight: 700; }
-.cost-value { color: #2563eb; font-weight: 900; }
+.label {
+  color: #64748b;
+  font-weight: 500;
+}
 
-.probability-container { margin-bottom: 24px; }
+.value {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.cost-value {
+  color: #2563eb;
+  font-weight: 900;
+}
+
+.probability-container {
+  margin-bottom: 24px;
+}
+
 .prob-text {
   display: flex;
   justify-content: space-between;
@@ -125,19 +142,22 @@
   background-color: var(--blue);
   color: #ffffff;
   border: none;
-  border-radius: 6px; /* Sharper corners for an institutional look */
+  border-radius: 6px;
+  /* Sharper corners for an institutional look */
   padding: 14px 28px;
   font-size: 13px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em; /* Clean tracking */
+  letter-spacing: 0.08em;
+  /* Clean tracking */
   cursor: pointer;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .btn-main:hover {
-  background-color: #1d4ed8; /* Slightly darker rich blue */
+  background-color: #1d4ed8;
+  /* Slightly darker rich blue */
 }
 
 .btn-main:active {
@@ -229,12 +249,14 @@
 }
 
 .cta-button:hover svg {
-  transform: translateX(4px); /* Slick micro-interaction */
+  transform: translateX(4px);
+  /* Slick micro-interaction */
 }
 
 /* Inside InternshipCard.css */
 .exchange-cost-value {
-  font-family: 'JetBrains Mono', 'Courier New', monospace; /* Financial look */
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  /* Financial look */
   font-weight: 850;
   color: var(--blue);
   letter-spacing: -0.02em;
@@ -245,19 +267,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  
-  background: rgba(37, 99, 235, 0.08); /* Very light blue tint */
+
+  background: rgba(37, 99, 235, 0.08);
+  /* Very light blue tint */
   color: var(--blue);
-  
+
   padding: 4px 10px;
   border-radius: 6px;
   border: 1.5px solid rgba(37, 99, 235, 0.2);
-  
-  font-family: 'JetBrains Mono', 'Menlo', monospace; /* The "Money" font */
+
+  font-family: 'JetBrains Mono', 'Menlo', monospace;
+  /* The "Money" font */
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.02em;
-  
+
   box-shadow: 0 2px 4px rgba(37, 99, 235, 0.05);
   transition: all 0.2s ease;
 }
@@ -268,4 +292,119 @@
   color: #ffffff;
   border-color: var(--blue);
   transform: translateY(-1px);
+}
+
+.live-pulse {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: ripple 1.5s infinite ease-in-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+.pipeline-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 12px 0;
+}
+
+.contribute-data-zone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px dashed #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.contribute-data-zone select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  font-weight: 600;
+  color: #2563eb;
+  background: white;
+  cursor: pointer;
+}
+
+.pipeline-matrix {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.matrix-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.matrix-row:last-child {
+  border: none;
+}
+
+.alert-row {
+  color: #f59e0b;
+}
+
+.success-row {
+  color: #38bdf8;
+}
+
+.offer-row {
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.matrix-title {
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }

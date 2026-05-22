@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import './InternshipCard.css';
 
-const InternshipCard = ({ data, userCredits, onPurchase }) => {
-  // Use the database status to determine if it is unlocked on page load
+const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
   const [isRevealed, setIsRevealed] = useState(data?.isAlreadyUnlocked || false);
+  const [selectedStage, setSelectedStage] = useState("");
+  const [stageNotes, setStageNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  // Sync state cleanly if the listings refresh
   useEffect(() => {
     setIsRevealed(data?.isAlreadyUnlocked || false);
   }, [data?.isAlreadyUnlocked]);
 
-  if (!data) return null;
-
   const handleUnlock = async () => {
-    const cost = data.cost || 50;
-    
-    if (userCredits >= cost) {
-      // Wait for backend validation
-      const transactionApproved = await onPurchase(cost); 
-      if (transactionApproved) {
-        setIsRevealed(true);
-      }
+    if (userCredits >= data.cost) {
+      const success = await onPurchase(data.cost);
+      if (success) setIsRevealed(true);
     } else {
-      alert(`Insufficient Credits. You need ${cost} TC to unlock this lead.`);
+      alert(`Insufficient funds. You need ${data.cost} TC to unlock this pipeline data.`);
     }
+  };
+
+  const handleSubmitStatus = async () => {
+    if (!selectedStage) return;
+    
+    setSubmitting(true);
+    // CRITICAL FIX: Sends stage AND text notes to align exactly with App.jsx
+    await onStatusUpdate(selectedStage, stageNotes);
+    setSubmitting(false);
+    
+    setSelectedStage(""); // Collapse form drawer
+    setStageNotes("");    // Reset text field
   };
 
   return (
     <div className={`trive-card ${isRevealed ? 'revealed' : 'locked'}`}>
+      {/* Header Info */}
       <div className="card-header">
         <div className="company-logo">{data.company}</div>
-        <div className="vetted-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Vetted {data.vettedBy}
+        <div className="live-pulse">
+          <span className="pulse-dot"></span>
+          Active Pipeline
         </div>
       </div>
 
@@ -43,45 +48,101 @@ const InternshipCard = ({ data, userCredits, onPurchase }) => {
         <div className="role-tags">{data.tags ? data.tags.join(' • ') : ''}</div>
       </div>
 
-      <div className="trade-details">
-        <div className="detail-row">
-          <span className="label">Lead Type:</span>
-          <span className="value">{data.leadType}</span>
+      {/* Dynamic Status Bar - FIXED APPLICANT COUNT */}
+      <div className="pipeline-summary-row">
+        <div className="metric">
+          <span className="metric-label">Tracking:</span>
+          {/* Replaced '|| 12' fallback with real live dynamic data defaults */}
+          <strong className="metric-value">{data.applicantCount || 0} Students</strong>
         </div>
         {!isRevealed && (
-          <div className="lead-cost-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-            <span className="exchange-label" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--slate)' }}>
-              Exchange Cost:
-            </span>
-            <div className="tc-badge">{data.cost || 50} TC</div>
+          <div className="tc-badge cost-badge">{data.cost} TC to Unlock</div>
+        )}
+      </div>
+
+      {/* CONTRIBUTE ANONYMOUS DATA WITH TEXT DRAWER */}
+      <div className="contribute-flow-box">
+        <div className="contribute-data-zone">
+          <label>Your Status:</label>
+          <select 
+            value={selectedStage} 
+            onChange={(e) => setSelectedStage(e.target.value)}
+            disabled={submitting}
+          >
+            <option value="">-- Update to earn +10 TC --</option>
+            <option value="Applied">Applied</option>
+            <option value="OA Invite">Received OA</option>
+            <option value="Interview">Interviewing</option>
+            <option value="Offer">Received Offer</option>
+            <option value="Rejected">Rejected/Ghosted</option>
+          </select>
+        </div>
+
+        {selectedStage && (
+          <div className="notes-input-drawer">
+            <textarea 
+              placeholder={`Optional: Record what happened during your "${selectedStage}" phase... (e.g., test questions, formats, interview answers)`}
+              value={stageNotes}
+              onChange={(e) => setStageNotes(e.target.value)}
+              rows="3"
+            />
+            <button className="submit-log-btn" onClick={handleSubmitStatus} disabled={submitting}>
+              {submitting ? 'Committing...' : 'Commit Intel (+10 TC)'}
+            </button>
           </div>
         )}
       </div>
 
+      {/* INTELLIGENCE GATE */}
       <div className="intelligence-gate">
         {isRevealed ? (
           <div className="unlocked-content">
-            <div className="probability-container">
-              <div className="prob-text">
-                <span>Probability ({data.probability}%)</span>
-                <span style={{ color: '#94a3b8' }}>Verified</span>
+            <h4 className="matrix-title">Anonymized Cohort Timelines</h4>
+            <div className="pipeline-matrix">
+              <div className="matrix-row">
+                <span>Applied / Processing:</span>
+                <strong>{data.stats?.applied || 0}%</strong>
               </div>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: `${data.probability}%` }}></div>
+              <div className="matrix-row alert-row">
+                <span>Hit with OAs:</span>
+                <strong>{data.stats?.oa || 0}%</strong>
+              </div>
+              <div className="matrix-row success-row">
+                <span>Advanced to Interviews:</span>
+                <strong>{data.stats?.interview || 0}%</strong>
+              </div>
+              <div className="matrix-row offer-row">
+                <span>Offers Secured:</span>
+                <strong>{data.stats?.offer || 0}%</strong>
+              </div>
+              <div className="matrix-row text-slate" style={{ color: '#64748b' }}>
+                <span>Rejected / Ghosted:</span>
+                <strong>{data.stats?.rejected || 0}%</strong>
               </div>
             </div>
-            <div className="insight-box">
-              <p><strong>INSIDER INSIGHT:</strong> "{data.insight}"</p>
+
+            {/* LIVE DATA: ANONYMOUS TEXT INTELLIGENCE LOGS */}
+            <div className="intel-logs-container">
+              <h4 className="matrix-title" style={{ marginTop: '15px' }}>Anonymous Intelligence Logs</h4>
+              {data.liveIntelligenceLogs && data.liveIntelligenceLogs.length > 0 ? (
+                <div className="log-scroller">
+                  {data.liveIntelligenceLogs.map((log, index) => (
+                    <div key={index} className="intel-log-bubble">
+                      <span className="log-badge-stage">{log.stage}</span>
+                      <p>"{log.text}"</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-logs-text">No test intelligence records submitted for this cohort yet.</p>
+              )}
             </div>
           </div>
         ) : (
           <div className="locked-overlay">
-            <div className="blur-overlay" style={{ textAlign: 'center', padding: '15px 0', color: '#64748b' }}>
-              <p>🔒 Secret intelligence hidden</p>
-            </div>
             <button className="cta-button" onClick={handleUnlock}>
-              Unlock Intelligence
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              Unlock Institutional Timelines & Logs
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
