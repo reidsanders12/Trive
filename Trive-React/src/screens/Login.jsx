@@ -41,10 +41,10 @@ const Login = ({ onLoginSuccess, onClose }) => {
 
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
-            <label>Email</label>
+            <label>School Email</label>
             <input 
               type="email" 
-              placeholder="you@gmail.com" 
+              placeholder="student@university.edu" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required 

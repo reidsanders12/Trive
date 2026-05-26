@@ -7,6 +7,10 @@ import Login from './screens/Login'
 import CreateAccount from './screens/CreateAccount'
 import PostLeadForm from './components/PostLeadForm'
 import TokenShop from './screens/TokenShop'
+import OnboardingSurvey from './components/OnboardingSurvey'
+import SchoolLeaderboard from './components/SchoolLeaderboard';
+import ActivityTicker from './components/ActivityTicker';
+import MyPortfolio from './components/MyPortfolio';
 
 function App() {
     const [showLoginModal, setShowLoginModal] = useState(null);
@@ -15,6 +19,8 @@ function App() {
     const [exchanges, setExchanges] = useState([]);
     const [loadingExchanges, setLoadingExchanges] = useState(true);
     const [showShopModal, setShowShopModal] = useState(false);
+    const [needsOnboarding, setNeedsOnboarding] = useState(false);
+    const [viewMode, setViewMode] = useState('global'); // 'global' or 'portfolio'
 
     // 1. Session & Profile Management
     useEffect(() => {
@@ -26,6 +32,7 @@ function App() {
             setUser(session?.user ?? null);
             if (!session?.user) {
                 setCredits(0);
+                setNeedsOnboarding(false); // Reset onboarding state on logout
             }
         });
 
@@ -46,10 +53,20 @@ function App() {
         if (currentUserId) {
             const { data: profileData } = await supabase
                 .from('profiles')
-                .select('credits')
+                .select('credits, university')
                 .eq('id', currentUserId)
                 .single();
-            if (profileData) setCredits(profileData.credits);
+
+            if (profileData) {
+                setCredits(profileData.credits);
+
+                // If profile has no verified university column data, intercept with modal flow
+                if (!profileData.university) {
+                    setNeedsOnboarding(true);
+                } else {
+                    setNeedsOnboarding(false);
+                }
+            }
 
             const { data: purchaseData } = await supabase
                 .from('purchases')
@@ -60,7 +77,7 @@ function App() {
             }
         }
 
-        // 2. Fetch tracking rows containing current metrics AND textual crowd notes
+        // 2. Fetch tracking rows containing current metrics AND textual crowd notes (Global Read)
         const { data: trackerRows } = await supabase
             .from('pipeline_tracker')
             .select('exchange_id, current_stage, stage_notes');
@@ -74,8 +91,11 @@ function App() {
 
         if (!error && leadsData) {
             const formatted = leadsData.map(item => {
-                // Isolate tracking logs tied strictly to this company's row ID
-                const companyRows = trackerRows ? trackerRows.filter(r => r.exchange_id === item.id) : [];
+                // TYPE-MATCHING NORMALIZATION: Force both IDs to evaluate explicitly as Numbers.
+                const companyRows = trackerRows
+                    ? trackerRows.filter(r => Number(r.exchange_id) === Number(item.id))
+                    : [];
+
                 const totalApplicants = companyRows.length;
 
                 // Extract and structure valid textual insights logged by peers
@@ -109,7 +129,7 @@ function App() {
                     insight: item.insight,
                     isAlreadyUnlocked: purchasedIds.includes(item.id),
                     applicantCount: totalApplicants,
-                    liveIntelligenceLogs: liveLogs, // Feed array to the card
+                    liveIntelligenceLogs: liveLogs,
                     stats: {
                         applied: getPercentage('Applied'),
                         oa: getPercentage('OA Invite'),
@@ -142,12 +162,12 @@ function App() {
             console.error("Database structural mismatch:", error.message);
             alert("Failed to record status: " + error.message);
         } else {
-            // Increment wallet ledger locally
             setCredits(prev => prev + 10);
             alert(`Intelligence logged! Your wallet has been credited +10 TC.`);
-            fetchProfileAndExchanges(); // Re-sync components data map
+            fetchProfileAndExchanges();
         }
     };
+
     const handleBuyCredits = async (amount) => {
         if (!user) return false;
 
@@ -196,7 +216,7 @@ function App() {
         <div className="app-container">
             <nav className="navbar">
                 <div className="nav-logo">
-                    trive<span style={{ color: '#2563eb' }}>.</span>
+                    trive
                 </div>
                 <div className="nav-links">
                     <a href="#feed">The Trade</a>
@@ -232,7 +252,7 @@ function App() {
             <header className="hero-section">
                 <h1 className="hero-title">Trade access.<br />Thrive together.</h1>
                 <p className="hero-subtitle">
-                    The high-trust exchange for students to swap internship leads and secure their future in a stress-free environment.
+                    The verified data liquidity layer for institutional talent. Drop application links, extract programmatic pipeline intelligence, and bypass black-box corporate tracking algorithms.
                 </p>
                 {!user && (
                     <div className="hero-actions">
@@ -242,33 +262,61 @@ function App() {
                 )}
             </header>
 
+            {/* LOCATE THIS BLOCK INSIDE YOUR APP.JSX RETURN STATEMENTS */}
             <section id="feed" className="feed-section">
-                <div className="section-header">
-                    <h2>Active Internship Exchanges</h2>
-                    <p>Verified institutional leads from your university network.</p>
-                </div>
-
-                <div className="card-grid">
+                {/* NAVIGATION CONTROL TABS */}
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', borderBottom: '2px solid #e2e8f0', paddingBottom: '10px' }}>
+                    <button
+                        onClick={() => setViewMode('global')}
+                        style={{ background: 'none', border: 'none', fontSize: '16px', fontWeight: '800', cursor: 'pointer', color: viewMode === 'global' ? '#2563eb' : '#94a3b8', borderBottom: viewMode === 'global' ? '3px solid #2563eb' : 'none', paddingBottom: '10px', marginBottom: '-13px' }}
+                    >
+                        🌐 Global Data Board
+                    </button>
                     {user && (
-                        <PostLeadForm onLeadPosted={fetchProfileAndExchanges} />
-                    )}
-
-                    {loadingExchanges ? (
-                        <div className="loading-state">Querying database rows...</div>
-                    ) : exchanges.length === 0 ? (
-                        <p className="empty-feed-text">No active leads in this epoch.</p>
-                    ) : (
-                        exchanges.map((exchange) => (
-                            <InternshipCard
-                                key={exchange.id}
-                                data={exchange}
-                                userCredits={credits}
-                                onPurchase={(cost) => handlePurchaseLead(exchange.id, cost)}
-                                onStatusUpdate={(stage, notes) => handleUpdatePipelineStatus(exchange.id, stage, notes)}
-                            />
-                        ))
+                        <button
+                            onClick={() => setViewMode('portfolio')}
+                            style={{ background: 'none', border: 'none', fontSize: '16px', fontWeight: '800', cursor: 'pointer', color: viewMode === 'portfolio' ? '#2563eb' : '#94a3b8', borderBottom: viewMode === 'portfolio' ? '3px solid #2563eb' : 'none', paddingBottom: '10px', marginBottom: '-13px' }}
+                        >
+                            💼 My Private Terminal
+                        </button>
                     )}
                 </div>
+
+                {/* CONDITIONAL RENDER PIPELINE */}
+                {viewMode === 'portfolio' ? (
+                    // RENDER PRIVATE PORTFOLIO VIEW
+                    <MyPortfolio userId={user?.id} currentCredits={credits} />
+                ) : (
+                    // RENDER ORIGINAL GLOBAL WORKING ECOSYSTEM
+                    <>
+                        <div className="leaderboard-banner-wrapper" style={{ marginBottom: '32px', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                            <ActivityTicker />
+                            <SchoolLeaderboard />
+                        </div>
+
+                        <div className="card-grid">
+                            {user && (
+                                <PostLeadForm onLeadPosted={fetchProfileAndExchanges} />
+                            )}
+
+                            {loadingExchanges ? (
+                                <div className="loading-state">Querying database rows...</div>
+                            ) : exchanges.length === 0 ? (
+                                <p className="empty-feed-text">No active leads in this epoch.</p>
+                            ) : (
+                                exchanges.map((exchange) => (
+                                    <InternshipCard
+                                        key={exchange.id}
+                                        data={exchange}
+                                        userCredits={credits}
+                                        onPurchase={(cost) => handlePurchaseLead(exchange.id, cost)}
+                                        onStatusUpdate={(stage, notes) => handleUpdatePipelineStatus(exchange.id, stage, notes)}
+                                    />
+                                ))
+                            )}
+                        </div>
+                    </>
+                )}
             </section>
 
             <AboutPage />
@@ -290,6 +338,17 @@ function App() {
                 <TokenShop
                     onClose={() => setShowShopModal(false)}
                     onPurchaseComplete={handleBuyCredits}
+                />
+            )}
+
+            {/* HIGH-VALUE INTERCEPT OVERLAY MODAL */}
+            {needsOnboarding && user && (
+                <OnboardingSurvey
+                    userId={user.id}
+                    onComplete={() => {
+                        setNeedsOnboarding(false);
+                        fetchProfileAndExchanges();
+                    }}
                 />
             )}
 

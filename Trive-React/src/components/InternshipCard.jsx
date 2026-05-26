@@ -22,12 +22,12 @@ const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
 
   const handleSubmitStatus = async () => {
     if (!selectedStage) return;
-    
+
     setSubmitting(true);
     // CRITICAL FIX: Sends stage AND text notes to align exactly with App.jsx
     await onStatusUpdate(selectedStage, stageNotes);
     setSubmitting(false);
-    
+
     setSelectedStage(""); // Collapse form drawer
     setStageNotes("");    // Reset text field
   };
@@ -64,8 +64,8 @@ const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
       <div className="contribute-flow-box">
         <div className="contribute-data-zone">
           <label>Your Status:</label>
-          <select 
-            value={selectedStage} 
+          <select
+            value={selectedStage}
             onChange={(e) => setSelectedStage(e.target.value)}
             disabled={submitting}
           >
@@ -80,7 +80,7 @@ const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
 
         {selectedStage && (
           <div className="notes-input-drawer">
-            <textarea 
+            <textarea
               placeholder={`Optional: Record what happened during your "${selectedStage}" phase... (e.g., test questions, formats, interview answers)`}
               value={stageNotes}
               onChange={(e) => setStageNotes(e.target.value)}
@@ -120,21 +120,21 @@ const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
                 <strong>{data.stats?.rejected || 0}%</strong>
               </div>
             </div>
+            <div className="intelligence-logs-container">
+              <h4>Live Intelligence Logs</h4>
 
-            {/* LIVE DATA: ANONYMOUS TEXT INTELLIGENCE LOGS */}
-            <div className="intel-logs-container">
-              <h4 className="matrix-title" style={{ marginTop: '15px' }}>Anonymous Intelligence Logs</h4>
               {data.liveIntelligenceLogs && data.liveIntelligenceLogs.length > 0 ? (
-                <div className="log-scroller">
-                  {data.liveIntelligenceLogs.map((log, index) => (
-                    <div key={index} className="intel-log-bubble">
-                      <span className="log-badge-stage">{log.stage}</span>
-                      <p>"{log.text}"</p>
-                    </div>
-                  ))}
-                </div>
+                data.liveIntelligenceLogs.map((log, index) => (
+                  <div key={index} className="log-row" style={{ textAlign: 'left', marginBottom: '8px', fontSize: '14px' }}>
+                    {/* THE FIX: Wrap the stage in a strong tag and append a colon for separation */}
+                    <strong style={{ color: '#0f172a', marginRight: '6px' }}>{log.stage}:</strong>
+                    <span style={{ color: '#475569', fontStyle: 'italic' }}>"{log.text}"</span>
+                  </div>
+                ))
               ) : (
-                <p className="empty-logs-text">No test intelligence records submitted for this cohort yet.</p>
+                <p style={{ color: '#94a3b8', fontSize: '13px', fontStyle: 'italic' }}>
+                  No intelligence records logged for this pipeline yet.
+                </p>
               )}
             </div>
           </div>

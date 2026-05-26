@@ -1,47 +1,47 @@
 import React from 'react';
-import './About.css'; // Make sure About.css is in this same screens folder
+import './About.css'; 
 
 const AboutPage = () => {
   return (
     <section id="about" className="about-section">
       <div className="about-container">
         
-        {/* Left Side: The Story/Mission */}
+        {/* Left Side: The Market Mechanics */}
         <div className="about-content">
-          <span className="about-tagline">Why We Built Trive</span>
-          <h2 className="about-title">Decentralizing the Network.</h2>
+          <span className="about-tagline">The Institutional Core</span>
+          <h2 className="about-title">The Career Liquidity Protocol.</h2>
           
           <p className="about-text">
-            Securing an internship shouldn't depend on who your parents know or how lucky you get with an algorithm. The reality of the job market is that the best opportunities are rarely found on public job boards—they live within hidden networks and personal connections.
+            Traditional recruiting systems are fundamentally broken. Highly qualified talent gets buried under millions of unverified spam applications, while students waste immense energy shouting into black-box corporate tracking algorithms. 
           </p>
           
           <p className="about-text">
-            Trive was born out of a real frustration. After watching classmates and close peers struggle to break through traditional application walls, it became obvious that the system was broken. While individual students have powerful, isolated networks, there was no centralized mechanism to share that access.
+            Trive changes the dynamic by introducing a structured, double-sided data exchange. We treat hiring pipelines like live financial markets, allowing students to log real-time interview intelligence, track actual cohort progression, and turn their localized academic insight into functional ecosystem capital.
           </p>
 
-          <p className="about-text font-semibold text-navy">
-            We built Trive to change that. By creating a high-trust exchange, students can leverage their verified university networks to swap leads, trade warm intros, and open doors for one another. 
+          <p className="about-text" style={{ fontWeight: '700', color: '#2563eb' }}>
+            By enforcing authenticated domain parameters and clean metric tracking, we build a high-fidelity talent index that bypasses corporate gatekeepers entirely. Students earn market utility for verifying the board, and recruiters gain programmatic access to high-demand student cohorts.
           </p>
         </div>
 
-        {/* Right Side: The Core Pillars */}
+        {/* Right Side: The Ecosystem Pillars */}
         <div className="about-pillars">
           <div className="pillar-card">
             <div className="pillar-num">01</div>
-            <h3>Peer-to-Peer Capital</h3>
-            <p>Turn your personal network into a structural asset that helps your community thrive.</p>
+            <h3>Validated Networks</h3>
+            <p>Every node on the exchange is verified via dynamic API domain matching, ensuring a pure, spam-free ecosystem composed exclusively of active university peers.</p>
           </div>
 
           <div className="pillar-card">
             <div className="pillar-num">02</div>
-            <h3>Verified Integrity</h3>
-            <p>Every lead and connection is vetted via trive verification to completely eliminate spam.</p>
+            <h3>Asymmetric Alpha</h3>
+            <p>Gain a direct competitive edge by unlocking crowd-sourced pipeline milestones, interview logs, and critical operational updates hours before they hit the public market.</p>
           </div>
 
           <div className="pillar-card">
             <div className="pillar-num">03</div>
-            <h3>Zero-Friction Exchange</h3>
-            <p>Trade access seamlessly using our transparent credit system. No gatekeepers, just utility.</p>
+            <h3>Data Pre-Structuring</h3>
+            <p>By transforming raw student backgrounds into structured tracking profiles, we create a secure, searchable talent directory ready for premium enterprise institutional deployment.</p>
           </div>
         </div>
 
@@ -50,5 +50,4 @@ const AboutPage = () => {
   );
 };
 
-// This matches the default import name you used in App.jsx
 export default AboutPage;

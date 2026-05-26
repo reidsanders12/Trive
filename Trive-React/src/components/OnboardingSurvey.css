@@ -1,0 +1,67 @@
+.onboarding-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999;
+}
+
+.onboarding-modal {
+  background: white;
+  width: 100%; max-width: 480px;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+}
+
+.onboarding-progress {
+  display: flex; justify-content: center; gap: 8px; margin-bottom: 24px;
+}
+
+.progress-dot {
+  width: 32px; height: 6px; background: #e2e8f0; border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active { background: #2563eb; }
+
+.onboarding-step h2 { font-size: 22px; color: #0f172a; margin-bottom: 6px; font-weight: 800; }
+.onboarding-step p { font-size: 13px; color: #64748b; margin-bottom: 20px; line-height: 1.5; }
+
+.input-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; text-align: left;}
+.input-group label { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; }
+.input-group input, .input-group select {
+  padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; color: #0f172a;
+}
+
+.input-row { display: flex; gap: 12px; }
+.input-row .input-group { flex: 1; }
+
+.button-group-row { display: flex; gap: 12px; margin-top: 10px; }
+
+.onboard-next-btn, .onboard-submit-btn {
+  width: 100%; background: #2563eb; color: white; border: none; padding: 12px;
+  font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 14px;
+}
+.onboard-next-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+.onboard-back-btn {
+  background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 12px 20px;
+  font-weight: 600; border-radius: 6px; cursor: pointer;
+}
+
+.skills-tag-container {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; margin-bottom: 16px;
+  min-height: 40px; border: 1px dashed #cbd5e1; padding: 8px; border-radius: 6px;
+}
+
+.skill-tag {
+  background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;
+  padding: 4px 8px; font-size: 12px; font-weight: 700; border-radius: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.skill-tag button {
+  background: none; border: none; color: #1e40af; cursor: pointer; font-size: 14px; font-weight: bold; padding: 0;
+}
