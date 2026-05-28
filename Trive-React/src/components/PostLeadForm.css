@@ -283,10 +283,3 @@
 .input-group select:hover {
   border-color: #cbd5e1;
 }
-
-/* Style the actual list options (limited styling, but keeps it clean) */
-.input-group select option {
-  background: #ffffff;
-  color: var(--navy);
-  padding: 10px;
-}

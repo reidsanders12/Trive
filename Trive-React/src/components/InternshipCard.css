@@ -408,3 +408,15 @@
 .mt-10 {
   margin-top: 10px;
 }
+
+/* Tactile Interactions for the Intel Commit Button */
+.trive-intel-commit-btn:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35);
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important;
+}
+
+.trive-intel-commit-btn:not(:disabled):active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+}

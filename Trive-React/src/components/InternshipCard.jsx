@@ -86,8 +86,55 @@ const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
               onChange={(e) => setStageNotes(e.target.value)}
               rows="3"
             />
-            <button className="submit-log-btn" onClick={handleSubmitStatus} disabled={submitting}>
-              {submitting ? 'Committing...' : 'Commit Intel (+10 TC)'}
+            
+            {/* UPGRADED COMMIT INTEL BUTTON */}
+            <button 
+              className="submit-log-btn trive-intel-commit-btn" 
+              onClick={handleSubmitStatus} 
+              disabled={submitting}
+              style={{
+                width: '100%',
+                background: submitting ? '#64748b' : 'linear-gradient(135deg, #059669 0%, #047857 100%)', // Premium green for successful mining
+                color: 'white',
+                border: 'none',
+                padding: '12px',
+                fontWeight: '700',
+                borderRadius: '8px',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                fontSize: '13px',
+                letterSpacing: '0.02em',
+                textTransform: 'uppercase',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 12px rgba(5, 150, 105, 0.2)',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                marginTop: '8px'
+              }}
+            >
+              {submitting ? (
+                <>
+                  <svg className="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ animation: 'spin 1s linear infinite' }}>
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" style={{ opacity: 0.25 }}></circle>
+                    <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Committing Node Assets...</span>
+                </>
+              ) : (
+                <>
+                  <span>Commit Intel</span>
+                  <span style={{ 
+                    background: 'rgba(255, 255, 255, 0.2)', 
+                    padding: '2px 6px', 
+                    borderRadius: '4px', 
+                    fontSize: '11px', 
+                    fontWeight: '800',
+                  }}>
+                    +10 TC
+                  </span>
+                </>
+              )}
             </button>
           </div>
         )}
@@ -126,7 +173,6 @@ const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
               {data.liveIntelligenceLogs && data.liveIntelligenceLogs.length > 0 ? (
                 data.liveIntelligenceLogs.map((log, index) => (
                   <div key={index} className="log-row" style={{ textAlign: 'left', marginBottom: '8px', fontSize: '14px' }}>
-                    {/* THE FIX: Wrap the stage in a strong tag and append a colon for separation */}
                     <strong style={{ color: '#0f172a', marginRight: '6px' }}>{log.stage}:</strong>
                     <span style={{ color: '#475569', fontStyle: 'italic' }}>"{log.text}"</span>
                   </div>
@@ -150,6 +196,14 @@ const InternshipCard = ({ data, userCredits, onPurchase, onStatusUpdate }) => {
           </div>
         )}
       </div>
+      
+      {/* Embedded Spinner Keyframes */}
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
